@@ -34,7 +34,7 @@ import util.ConnectionUtil;
  *
  * If this is your first time working with JDBC, I recommend reading through the JDBCWalkthrough file that displays how to use JDBC for a similar scenario.
  */
-public class Jdbc {
+public class Lab {
 
     public void createSong(Song song)  {
         //write jdbc code here
