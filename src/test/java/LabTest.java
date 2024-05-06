@@ -14,7 +14,7 @@ import java.util.List;
 
 public class LabTest {
 
-    Jdbc jdbc = new Jdbc();
+    LabTest jdbc = new LabTest();
 
 
     @Before
