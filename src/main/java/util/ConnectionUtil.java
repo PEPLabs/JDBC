@@ -1,35 +1,56 @@
 package util;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/* Singleton Design Pattern */
+import org.h2.jdbcx.JdbcDataSource;
+
+/**
+ * The ConnectionUtil class will be utilized to create an active connection to
+ * our database.  We will be utilizing an in-memory called h2database for the sql demos.
+ * 
+ * DO NOT CHANGE ANYTHING IN THIS CLASS
+ */
 public class ConnectionUtil {
-    private static Connection connection = null;
 
-    private static String url = "jdbc:h2:./h2/lesson/db";
-    private static String username = "sa";
-    private static String password = "sa";
+	/**
+	 * url will represent our connection string. Since this is an in-memory db, we
+	 * will represent a file location to store the data
+	 */
+	private static String url = "jdbc:h2:./h2/db;";
+	/**
+	 * Default username for connecting to h2
+	 */
+	private static String username = "sa";
+	/**
+	 * Default password for connecting to h2
+	 */
+	private static String password = "sa";
 
-    public static Connection getConnection(){
-        if(connection == null){
-            try {
-                connection = DriverManager.getConnection(url, username, password);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+	/**
+	 * DataSource for pooling. Pooling enables the creation of multiple connections when connections are closed.
+	 */
+	private static JdbcDataSource pool = new JdbcDataSource();
 
-        return connection;
-    }
+	/**
+	 * static initialization block to establish credentials for DataSoure Pool
+	 */
+	static {
+		pool.setURL(url);
+		pool.setUser(username);
+		pool.setPassword(password);
+	}
 
-    public static void closeConnection(){
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        connection = null;
-    }
+	/**
+	 * @return an active connection to the database
+	 */
+	public static Connection getConnection() {
+		try {
+			return pool.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }
